@@ -1,0 +1,96 @@
+import {
+  LayoutDashboard,
+  FolderKanban,
+  BarChart3,
+  FileText,
+  Database,
+  Settings,
+} from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
+import { Link, useLocation } from "wouter";
+
+const menuItems = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Campaigns",
+    url: "/campaigns",
+    icon: FolderKanban,
+  },
+  {
+    title: "Analytics",
+    url: "/analytics",
+    icon: BarChart3,
+  },
+  {
+    title: "Templates",
+    url: "/templates",
+    icon: FileText,
+  },
+  {
+    title: "Backups",
+    url: "/backups",
+    icon: Database,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+  },
+];
+
+export function AppSidebar() {
+  const [location] = useLocation();
+
+  return (
+    <Sidebar>
+      <SidebarHeader className="p-4">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
+            <FolderKanban className="h-5 w-5 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="text-base font-semibold">CampaignHub</h1>
+            <p className="text-xs text-muted-foreground">HR Marketing</p>
+          </div>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location === item.url}
+                    data-testid={`link-${item.title.toLowerCase()}`}
+                  >
+                    <Link href={item.url}>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  );
+}
