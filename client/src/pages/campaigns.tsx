@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { CampaignCard } from "@/components/CampaignCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,105 +19,59 @@ import {
 } from "@/components/ui/dialog";
 import { Plus, Search, Filter } from "lucide-react";
 import { CampaignForm } from "@/components/CampaignForm";
-import type { Campaign, InsertCampaign } from "@shared/schema";
+import { campaignApi } from "@/lib/api";
+import { queryClient } from "@/lib/queryClient";
+import type { InsertCampaign } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Campaigns() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const mockCampaigns: Campaign[] = [
-    {
-      id: "1",
-      name: "Iniciativa de Bem-Estar dos Funcionários",
-      description: "Promover programas de saúde e bem-estar em toda a organização",
-      status: "active",
-      startDate: new Date("2024-01-15"),
-      endDate: new Date("2024-03-15"),
-      budget: 15000,
-      targetAudience: "Todos os funcionários",
-      goals: "Aumentar participação em programas de bem-estar em 40%",
-      metrics: { reach: "1.245", engagement: "68%", duration: "2 meses", progress: 65 },
-      createdAt: new Date(),
+  const { data: campaigns = [], isLoading } = useQuery({
+    queryKey: ["/api/campaigns"],
+    queryFn: campaignApi.getAll,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: campaignApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
+      setIsCreateDialogOpen(false);
+      toast({
+        title: "Campanha criada",
+        description: "A campanha foi criada com sucesso.",
+      });
     },
-    {
-      id: "2",
-      name: "Campanha de Diversidade e Inclusão",
-      description: "Celebrar a diversidade e promover cultura inclusiva no ambiente de trabalho",
-      status: "active",
-      startDate: new Date("2024-02-01"),
-      endDate: new Date("2024-04-30"),
-      budget: 25000,
-      targetAudience: "Todos os funcionários",
-      goals: "Aumentar conscientização e engajamento em iniciativas de D&I",
-      metrics: { reach: "2.100", engagement: "74%", duration: "3 meses", progress: 42 },
-      createdAt: new Date(),
+    onError: () => {
+      toast({
+        title: "Erro",
+        description: "Não foi possível criar a campanha.",
+        variant: "destructive",
+      });
     },
-    {
-      id: "3",
-      name: "Cultura de Trabalho Remoto",
-      description: "Construir conexões fortes entre membros de equipes remotas",
-      status: "draft",
-      startDate: new Date("2024-03-01"),
-      endDate: new Date("2024-05-31"),
-      budget: 18000,
-      targetAudience: "Funcionários remotos",
-      goals: "Melhorar colaboração remota e integração da equipe",
-      metrics: { reach: "850", engagement: "0%", duration: "3 meses", progress: 0 },
-      createdAt: new Date(),
-    },
-    {
-      id: "4",
-      name: "Desenvolvimento de Liderança",
-      description: "Capacitar futuros líderes com treinamento e mentoria",
-      status: "completed",
-      startDate: new Date("2023-10-01"),
-      endDate: new Date("2023-12-31"),
-      budget: 35000,
-      targetAudience: "Gerentes e equipe sênior",
-      goals: "Completar treinamento de liderança para 50 funcionários",
-      metrics: { reach: "52", engagement: "92%", duration: "3 meses", progress: 100 },
-      createdAt: new Date(),
-    },
-    {
-      id: "5",
-      name: "Programa de Reconhecimento de Funcionários",
-      description: "Celebrar e reconhecer contribuições excepcionais dos funcionários",
-      status: "active",
-      startDate: new Date("2024-01-01"),
-      endDate: new Date("2024-12-31"),
-      budget: 20000,
-      targetAudience: "Todos os funcionários",
-      goals: "Aumentar satisfação e retenção de funcionários",
-      metrics: { reach: "3.200", engagement: "81%", duration: "12 meses", progress: 28 },
-      createdAt: new Date(),
-    },
-    {
-      id: "6",
-      name: "Integração de Novos Funcionários 2024",
-      description: "Receber e integrar novos membros da equipe de forma eficaz",
-      status: "active",
-      startDate: new Date("2024-01-01"),
-      endDate: new Date("2024-12-31"),
-      budget: 12000,
-      targetAudience: "Novos contratados",
-      goals: "Reduzir tempo de produtividade para novos funcionários",
-      metrics: { reach: "145", engagement: "88%", duration: "12 meses", progress: 15 },
-      createdAt: new Date(),
-    },
-  ];
+  });
 
   const handleCreateCampaign = (data: InsertCampaign) => {
-    console.log("Creating campaign:", data);
-    setIsCreateDialogOpen(false);
+    createMutation.mutate(data);
   };
 
-  const filteredCampaigns = mockCampaigns.filter((campaign) => {
+  const filteredCampaigns = campaigns.filter((campaign) => {
     const matchesSearch = campaign.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       campaign.description?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "all" || campaign.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">Carregando campanhas...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -138,7 +93,7 @@ export default function Campaigns() {
             <DialogHeader>
               <DialogTitle>Criar Nova Campanha</DialogTitle>
             </DialogHeader>
-            <CampaignForm onSubmit={handleCreateCampaign} />
+            <CampaignForm onSubmit={handleCreateCampaign} isLoading={createMutation.isPending} />
           </DialogContent>
         </Dialog>
       </div>
@@ -182,7 +137,9 @@ export default function Campaigns() {
 
       {filteredCampaigns.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Nenhuma campanha encontrada</p>
+          <p className="text-muted-foreground">
+            {campaigns.length === 0 ? "Nenhuma campanha criada ainda" : "Nenhuma campanha encontrada"}
+          </p>
         </div>
       )}
     </div>

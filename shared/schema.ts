@@ -41,7 +41,7 @@ export const templates = pgTable("templates", {
 export const backups = pgTable("backups", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   timestamp: timestamp("timestamp").defaultNow(),
-  dataSnapshot: jsonb("data_snapshot").notNull(),
+  storagePath: text("storage_path").notNull(),
   size: integer("size"),
   type: text("type").notNull().default("automatic"),
 });

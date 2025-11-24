@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { BackupTimeline } from "@/components/BackupTimeline";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Database, Download, Settings, Clock, HardDrive } from "lucide-react";
+import { Database, Settings, Clock, HardDrive } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,49 +15,68 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { Backup } from "@shared/schema";
+import { backupApi } from "@/lib/api";
+import { queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Backups() {
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
   const [selectedBackupId, setSelectedBackupId] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const mockBackups: Backup[] = [
-    {
-      id: "1",
-      timestamp: new Date("2024-01-22T14:30:00"),
-      dataSnapshot: {},
-      size: 2457600,
-      type: "automatic",
+  const { data: backups = [], isLoading } = useQuery({
+    queryKey: ["/api/backups"],
+    queryFn: backupApi.getAll,
+  });
+
+  const createBackupMutation = useMutation({
+    mutationFn: async () => {
+      // Backend will create backup with actual data snapshot
+      return fetch("/api/backups/create-manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }).then(res => {
+        if (!res.ok) throw new Error("Failed to create backup");
+        return res.json();
+      });
     },
-    {
-      id: "2",
-      timestamp: new Date("2024-01-21T14:30:00"),
-      dataSnapshot: {},
-      size: 2441200,
-      type: "automatic",
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/backups"] });
+      toast({
+        title: "Backup criado",
+        description: "O backup manual foi criado com sucesso.",
+      });
     },
-    {
-      id: "3",
-      timestamp: new Date("2024-01-20T10:15:00"),
-      dataSnapshot: {},
-      size: 2398400,
-      type: "manual",
+    onError: () => {
+      toast({
+        title: "Erro",
+        description: "Não foi possível criar o backup.",
+        variant: "destructive",
+      });
     },
-    {
-      id: "4",
-      timestamp: new Date("2024-01-19T14:30:00"),
-      dataSnapshot: {},
-      size: 2385900,
-      type: "automatic",
+  });
+
+  const restoreMutation = useMutation({
+    mutationFn: backupApi.restore,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/templates"] });
+      toast({
+        title: "Restauração concluída",
+        description: "Os dados foram restaurados com sucesso.",
+      });
+      setRestoreDialogOpen(false);
+      setSelectedBackupId(null);
     },
-    {
-      id: "5",
-      timestamp: new Date("2024-01-18T14:30:00"),
-      dataSnapshot: {},
-      size: 2372100,
-      type: "automatic",
+    onError: (error: any) => {
+      toast({
+        title: "Erro na restauração",
+        description: error.message || "Não foi possível restaurar o backup.",
+        variant: "destructive",
+      });
     },
-  ];
+  });
 
   const handleRestore = (backupId: string) => {
     setSelectedBackupId(backupId);
@@ -64,24 +84,56 @@ export default function Backups() {
   };
 
   const confirmRestore = () => {
-    console.log("Restoring backup:", selectedBackupId);
-    setRestoreDialogOpen(false);
-    setSelectedBackupId(null);
+    if (selectedBackupId) {
+      restoreMutation.mutate(selectedBackupId);
+    }
   };
 
-  const handleDownload = (backupId: string) => {
-    console.log("Downloading backup:", backupId);
+  const handleDownload = async (backupId: string) => {
+    try {
+      const response = await fetch(`/api/backups/${backupId}/download`);
+      if (!response.ok) throw new Error("Download failed");
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-${backupId}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      toast({
+        title: "Download concluído",
+        description: "O backup foi baixado com sucesso.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro no download",
+        description: "Não foi possível baixar o backup.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCreateBackup = () => {
-    console.log("Creating manual backup");
+    createBackupMutation.mutate();
   };
 
-  const totalSize = mockBackups.reduce((sum, backup) => sum + (backup.size || 0), 0);
+  const totalSize = backups.reduce((sum, backup) => sum + (backup.size || 0), 0);
   const formatBytes = (bytes: number) => {
     const mb = bytes / (1024 * 1024);
     return `${mb.toFixed(2)} MB`;
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">Carregando backups...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -92,9 +144,13 @@ export default function Backups() {
             Backups automáticos garantem que seus dados de campanha estejam sempre seguros
           </p>
         </div>
-        <Button onClick={handleCreateBackup} data-testid="button-create-backup">
+        <Button 
+          onClick={handleCreateBackup} 
+          disabled={createBackupMutation.isPending}
+          data-testid="button-create-backup"
+        >
           <Database className="h-4 w-4 mr-2" />
-          Criar Backup Manual
+          {createBackupMutation.isPending ? "Criando..." : "Criar Backup Manual"}
         </Button>
       </div>
 
@@ -105,9 +161,9 @@ export default function Backups() {
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold">{mockBackups.length}</div>
+            <div className="text-2xl font-semibold">{backups.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {mockBackups.filter(b => b.type === "automatic").length} automáticos
+              {backups.filter(b => b.type === "automatic").length} automáticos
             </p>
           </CardContent>
         </Card>
@@ -142,7 +198,7 @@ export default function Backups() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <BackupTimeline
-            backups={mockBackups}
+            backups={backups}
             onRestore={handleRestore}
             onDownload={handleDownload}
           />
@@ -208,8 +264,12 @@ export default function Backups() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel data-testid="button-cancel-restore">Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmRestore} data-testid="button-confirm-restore">
-              Restaurar Backup
+            <AlertDialogAction 
+              onClick={confirmRestore} 
+              disabled={restoreMutation.isPending}
+              data-testid="button-confirm-restore"
+            >
+              {restoreMutation.isPending ? "Restaurando..." : "Restaurar Backup"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

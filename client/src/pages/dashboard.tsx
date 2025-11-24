@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { StatsCard } from "@/components/StatsCard";
 import { CampaignCard } from "@/components/CampaignCard";
 import { TaskList } from "@/components/TaskList";
@@ -14,89 +15,79 @@ import {
 } from "@/components/ui/dialog";
 import { FolderKanban, Users, TrendingUp, DollarSign, Plus, Search } from "lucide-react";
 import { CampaignForm } from "@/components/CampaignForm";
-import type { Campaign, Task, InsertCampaign } from "@shared/schema";
+import { campaignApi, taskApi } from "@/lib/api";
+import { queryClient } from "@/lib/queryClient";
+import type { InsertCampaign } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const mockCampaigns: Campaign[] = [
-    {
-      id: "1",
-      name: "Iniciativa de Bem-Estar dos Funcionários",
-      description: "Promover programas de saúde e bem-estar",
-      status: "active",
-      startDate: new Date("2024-01-15"),
-      endDate: new Date("2024-03-15"),
-      budget: 15000,
-      targetAudience: "Todos os funcionários",
-      goals: "Aumentar participação em 40%",
-      metrics: { reach: "1.245", engagement: "68%", duration: "2 meses", progress: 65 },
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      name: "Campanha de Diversidade e Inclusão",
-      description: "Celebrar a diversidade no ambiente de trabalho",
-      status: "active",
-      startDate: new Date("2024-02-01"),
-      endDate: new Date("2024-04-30"),
-      budget: 25000,
-      targetAudience: "Todos os funcionários",
-      goals: "Aumentar conscientização e engajamento",
-      metrics: { reach: "2.100", engagement: "74%", duration: "3 meses", progress: 42 },
-      createdAt: new Date(),
-    },
-    {
-      id: "3",
-      name: "Cultura de Trabalho Remoto",
-      description: "Construir conexões fortes entre equipes remotas",
-      status: "draft",
-      startDate: new Date("2024-03-01"),
-      endDate: new Date("2024-05-31"),
-      budget: 18000,
-      targetAudience: "Funcionários remotos",
-      goals: "Melhorar colaboração remota",
-      metrics: { reach: "850", engagement: "0%", duration: "3 meses", progress: 0 },
-      createdAt: new Date(),
-    },
-  ];
+  const { data: campaigns = [], isLoading: campaignsLoading } = useQuery({
+    queryKey: ["/api/campaigns"],
+    queryFn: campaignApi.getAll,
+  });
 
-  const mockTasks: Task[] = [
-    {
-      id: "1",
-      campaignId: "1",
-      title: "Criar artes para redes sociais",
-      description: "Criar visuais atraentes",
-      assignee: "Sarah Chen",
-      status: "pending",
-      priority: "high",
-      dueDate: new Date("2024-01-25"),
-      createdAt: new Date(),
+  const { data: tasks = [], isLoading: tasksLoading } = useQuery({
+    queryKey: ["/api/tasks"],
+    queryFn: taskApi.getAll,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: campaignApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/campaigns"] });
+      setIsCreateDialogOpen(false);
+      toast({
+        title: "Campanha criada",
+        description: "A campanha foi criada com sucesso.",
+      });
     },
-    {
-      id: "2",
-      campaignId: "1",
-      title: "Escrever conteúdo para blog",
-      description: "Rascunhar artigo",
-      assignee: "Mike Johnson",
-      status: "completed",
-      priority: "medium",
-      dueDate: new Date("2024-01-20"),
-      createdAt: new Date(),
+  });
+
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      taskApi.update(id, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
     },
-    {
-      id: "3",
-      campaignId: "2",
-      title: "Agendar newsletter por e-mail",
-      description: "Enviar para todos os funcionários",
-      assignee: "Lisa Park",
-      status: "pending",
-      priority: "low",
-      dueDate: new Date("2024-01-30"),
-      createdAt: new Date(),
-    },
-  ];
+  });
+
+  const handleCreateCampaign = (data: InsertCampaign) => {
+    createMutation.mutate(data);
+  };
+
+  const handleToggleTask = (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+      const newStatus = task.status === "completed" ? "pending" : "completed";
+      updateTaskMutation.mutate({ id: taskId, status: newStatus });
+    }
+  };
+
+  const filteredCampaigns = campaigns.filter((campaign) =>
+    campaign.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ).slice(0, 4);
+
+  const recentTasks = tasks.slice(0, 5);
+
+  // Calculate stats
+  const activeCampaigns = campaigns.filter(c => c.status === "active").length;
+  const totalReach = campaigns.reduce((sum, c) => {
+    const metrics = c.metrics as any;
+    const reach = parseInt(metrics?.reach?.replace(/\D/g, "") || "0");
+    return sum + reach;
+  }, 0);
+  const avgEngagement = campaigns.length > 0
+    ? Math.round(campaigns.reduce((sum, c) => {
+        const metrics = c.metrics as any;
+        const engagement = parseInt(metrics?.engagement?.replace("%", "") || "0");
+        return sum + engagement;
+      }, 0) / campaigns.length)
+    : 0;
+  const totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
 
   const chartData = [
     { name: "Jan", value: 245 },
@@ -107,14 +98,15 @@ export default function Dashboard() {
     { name: "Jun", value: 956 },
   ];
 
-  const handleCreateCampaign = (data: InsertCampaign) => {
-    console.log("Creating campaign:", data);
-    setIsCreateDialogOpen(false);
-  };
+  const isLoading = campaignsLoading || tasksLoading;
 
-  const filteredCampaigns = mockCampaigns.filter((campaign) =>
-    campaign.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">Carregando painel...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -136,7 +128,7 @@ export default function Dashboard() {
             <DialogHeader>
               <DialogTitle>Criar Nova Campanha</DialogTitle>
             </DialogHeader>
-            <CampaignForm onSubmit={handleCreateCampaign} />
+            <CampaignForm onSubmit={handleCreateCampaign} isLoading={createMutation.isPending} />
           </DialogContent>
         </Dialog>
       </div>
@@ -144,25 +136,25 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
           title="Campanhas Ativas"
-          value="12"
+          value={activeCampaigns.toString()}
           icon={FolderKanban}
           trend={{ value: 8.2, isPositive: true }}
         />
         <StatsCard
           title="Alcance Total"
-          value="4.892"
+          value={totalReach.toLocaleString()}
           icon={Users}
           trend={{ value: 12.5, isPositive: true }}
         />
         <StatsCard
           title="Engajamento Médio"
-          value="67%"
+          value={`${avgEngagement}%`}
           icon={TrendingUp}
           trend={{ value: 3.1, isPositive: true }}
         />
         <StatsCard
-          title="Orçamento Gasto"
-          value="R$ 58mil"
+          title="Orçamento Total"
+          value={`R$ ${(totalBudget / 1000).toFixed(0)}mil`}
           icon={DollarSign}
           trend={{ value: 5.4, isPositive: false }}
         />
@@ -191,23 +183,31 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredCampaigns.map((campaign) => (
-                <CampaignCard
-                  key={campaign.id}
-                  campaign={campaign}
-                  onView={() => console.log("View campaign:", campaign.id)}
-                  onEdit={() => console.log("Edit campaign:", campaign.id)}
-                />
-              ))}
-            </div>
+            {filteredCampaigns.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">
+                  {campaigns.length === 0 ? "Nenhuma campanha criada ainda" : "Nenhuma campanha encontrada"}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredCampaigns.map((campaign) => (
+                  <CampaignCard
+                    key={campaign.id}
+                    campaign={campaign}
+                    onView={() => console.log("View campaign:", campaign.id)}
+                    onEdit={() => console.log("Edit campaign:", campaign.id)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
         <div>
           <TaskList
-            tasks={mockTasks}
-            onToggleTask={(id) => console.log("Toggle task:", id)}
+            tasks={recentTasks}
+            onToggleTask={handleToggleTask}
           />
         </div>
       </div>
