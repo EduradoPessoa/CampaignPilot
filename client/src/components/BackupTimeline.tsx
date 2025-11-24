@@ -24,13 +24,13 @@ export function BackupTimeline({ backups, onRestore, onDownload }: BackupTimelin
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Database className="h-5 w-5" />
-          Backup History
+          Histórico de Backups
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {backups.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">No backups yet</p>
+            <p className="text-sm text-muted-foreground text-center py-8">Nenhum backup ainda</p>
           ) : (
             backups.map((backup, index) => (
               <div
@@ -46,10 +46,10 @@ export function BackupTimeline({ backups, onRestore, onDownload }: BackupTimelin
                     <p className="font-medium text-sm">
                       {new Date(backup.timestamp!).toLocaleString()}
                     </p>
-                    <Badge variant="outline">{backup.type}</Badge>
+                    <Badge variant="outline">{backup.type === "automatic" ? "automático" : "manual"}</Badge>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Size: {formatBytes(backup.size || 0)} • Backup #{backups.length - index}
+                    Tamanho: {formatBytes(backup.size || 0)} • Backup #{backups.length - index}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -68,7 +68,7 @@ export function BackupTimeline({ backups, onRestore, onDownload }: BackupTimelin
                     data-testid={`button-restore-${backup.id}`}
                   >
                     <RotateCcw className="h-4 w-4 mr-2" />
-                    Restore
+                    Restaurar
                   </Button>
                 </div>
               </div>

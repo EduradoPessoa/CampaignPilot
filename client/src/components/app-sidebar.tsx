@@ -21,22 +21,22 @@ import { Link, useLocation } from "wouter";
 
 const menuItems = [
   {
-    title: "Dashboard",
+    title: "Painel",
     url: "/",
     icon: LayoutDashboard,
   },
   {
-    title: "Campaigns",
+    title: "Campanhas",
     url: "/campaigns",
     icon: FolderKanban,
   },
   {
-    title: "Analytics",
+    title: "Análises",
     url: "/analytics",
     icon: BarChart3,
   },
   {
-    title: "Templates",
+    title: "Modelos",
     url: "/templates",
     icon: FileText,
   },
@@ -46,7 +46,7 @@ const menuItems = [
     icon: Database,
   },
   {
-    title: "Settings",
+    title: "Configurações",
     url: "/settings",
     icon: Settings,
   },
@@ -64,13 +64,13 @@ export function AppSidebar() {
           </div>
           <div>
             <h1 className="text-base font-semibold">CampaignHub</h1>
-            <p className="text-xs text-muted-foreground">HR Marketing</p>
+            <p className="text-xs text-muted-foreground">Marketing RH</p>
           </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Navegação</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

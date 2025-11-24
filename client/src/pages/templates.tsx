@@ -18,73 +18,73 @@ export default function Templates() {
   const mockTemplates: Template[] = [
     {
       id: "1",
-      name: "New Hire Onboarding",
-      description: "Welcome new employees with a comprehensive onboarding campaign that includes orientation, training schedules, and team introductions",
-      category: "Onboarding",
+      name: "Integração de Novos Funcionários",
+      description: "Receba novos funcionários com uma campanha abrangente de integração que inclui orientação, cronogramas de treinamento e apresentações da equipe",
+      category: "Integração",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "2",
-      name: "Employee Wellness Program",
-      description: "Promote health and wellness initiatives including fitness challenges, mental health resources, and healthy lifestyle tips",
-      category: "Wellness",
+      name: "Programa de Bem-Estar dos Funcionários",
+      description: "Promova iniciativas de saúde e bem-estar incluindo desafios de fitness, recursos de saúde mental e dicas de estilo de vida saudável",
+      category: "Bem-Estar",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "3",
-      name: "Diversity & Inclusion Initiative",
-      description: "Celebrate diversity and promote inclusive culture with awareness campaigns, employee stories, and educational content",
-      category: "Culture",
+      name: "Iniciativa de Diversidade e Inclusão",
+      description: "Celebre a diversidade e promova cultura inclusiva com campanhas de conscientização, histórias de funcionários e conteúdo educacional",
+      category: "Cultura",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "4",
-      name: "Leadership Development",
-      description: "Nurture future leaders with training programs, mentorship opportunities, and leadership workshops",
-      category: "Training",
+      name: "Desenvolvimento de Liderança",
+      description: "Cultive futuros líderes com programas de treinamento, oportunidades de mentoria e workshops de liderança",
+      category: "Treinamento",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "5",
-      name: "Employee Recognition",
-      description: "Acknowledge and celebrate employee achievements with awards, spotlights, and appreciation events",
-      category: "Recognition",
+      name: "Reconhecimento de Funcionários",
+      description: "Reconheça e celebre conquistas dos funcionários com prêmios, destaques e eventos de apreciação",
+      category: "Reconhecimento",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "6",
-      name: "Team Building Events",
-      description: "Strengthen team bonds with virtual and in-person activities, social events, and collaborative challenges",
-      category: "Culture",
+      name: "Eventos de Integração de Equipe",
+      description: "Fortaleça os laços da equipe com atividades virtuais e presenciais, eventos sociais e desafios colaborativos",
+      category: "Cultura",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "7",
-      name: "Performance Review Cycle",
-      description: "Guide employees through performance evaluations with reminders, resources, and feedback templates",
-      category: "Performance",
+      name: "Ciclo de Avaliação de Desempenho",
+      description: "Oriente os funcionários através de avaliações de desempenho com lembretes, recursos e modelos de feedback",
+      category: "Desempenho",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "8",
-      name: "Benefits Enrollment",
-      description: "Simplify benefits selection with educational materials, comparison guides, and enrollment deadlines",
-      category: "Benefits",
+      name: "Inscrição em Benefícios",
+      description: "Simplifique a seleção de benefícios com materiais educacionais, guias de comparação e prazos de inscrição",
+      category: "Benefícios",
       content: {},
       createdAt: new Date(),
     },
     {
       id: "9",
-      name: "Career Development Path",
-      description: "Support employee growth with skill-building resources, career planning tools, and advancement opportunities",
-      category: "Training",
+      name: "Caminho de Desenvolvimento de Carreira",
+      description: "Apoie o crescimento dos funcionários com recursos de desenvolvimento de habilidades, ferramentas de planejamento de carreira e oportunidades de avanço",
+      category: "Treinamento",
       content: {},
       createdAt: new Date(),
     },
@@ -102,9 +102,9 @@ export default function Templates() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Campaign Templates</h1>
+        <h1 className="text-2xl font-semibold">Modelos de Campanha</h1>
         <p className="text-sm text-muted-foreground">
-          Start with proven templates for common HR marketing scenarios
+          Comece com modelos comprovados para cenários comuns de marketing de RH
         </p>
       </div>
 
@@ -112,7 +112,7 @@ export default function Templates() {
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search templates..."
+            placeholder="Buscar modelos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -122,10 +122,10 @@ export default function Templates() {
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
           <SelectTrigger className="w-[180px]" data-testid="select-category-filter">
             <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by category" />
+            <SelectValue placeholder="Filtrar por categoria" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="all">Todas as Categorias</SelectItem>
             {categories.map((category) => (
               <SelectItem key={category} value={category}>
                 {category}
@@ -147,7 +147,7 @@ export default function Templates() {
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No templates found</p>
+          <p className="text-muted-foreground">Nenhum modelo encontrado</p>
         </div>
       )}
     </div>

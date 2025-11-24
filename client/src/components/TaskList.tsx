@@ -16,15 +16,21 @@ const priorityColors: Record<string, string> = {
   high: "bg-red-500/10 text-red-700 dark:text-red-400",
 };
 
+const priorityLabels: Record<string, string> = {
+  low: "Baixa",
+  medium: "Média",
+  high: "Alta",
+};
+
 export function TaskList({ tasks, onToggleTask }: TaskListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Tasks</CardTitle>
+        <CardTitle className="text-lg">Tarefas</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {tasks.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">No tasks yet</p>
+          <p className="text-sm text-muted-foreground text-center py-8">Nenhuma tarefa ainda</p>
         ) : (
           tasks.map((task) => (
             <div
@@ -51,7 +57,7 @@ export function TaskList({ tasks, onToggleTask }: TaskListProps) {
                 )}
               </div>
               <Badge className={priorityColors[task.priority] || priorityColors.medium} data-testid={`badge-priority-${task.id}`}>
-                {task.priority}
+                {priorityLabels[task.priority] || task.priority}
               </Badge>
               {task.assignee && (
                 <Avatar className="h-8 w-8">

@@ -10,9 +10,9 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Settings</h1>
+        <h1 className="text-2xl font-semibold">Configurações</h1>
         <p className="text-sm text-muted-foreground">
-          Manage your account and application preferences
+          Gerencie sua conta e preferências do aplicativo
         </p>
       </div>
 
@@ -21,24 +21,24 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
-              Profile
+              Perfil
             </CardTitle>
-            <CardDescription>Update your personal information</CardDescription>
+            <CardDescription>Atualize suas informações pessoais</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" placeholder="John Doe" defaultValue="Sarah Chen" data-testid="input-name" />
+              <Label htmlFor="name">Nome Completo</Label>
+              <Input id="name" placeholder="João Silva" defaultValue="Sarah Chen" data-testid="input-name" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="email@example.com" defaultValue="sarah.chen@company.com" data-testid="input-email" />
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" placeholder="email@exemplo.com" defaultValue="sarah.chen@empresa.com" data-testid="input-email" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Input id="role" placeholder="HR Manager" defaultValue="HR Marketing Manager" data-testid="input-role" />
+              <Label htmlFor="role">Cargo</Label>
+              <Input id="role" placeholder="Gerente de RH" defaultValue="Gerente de Marketing de RH" data-testid="input-role" />
             </div>
-            <Button data-testid="button-save-profile">Save Changes</Button>
+            <Button data-testid="button-save-profile">Salvar Alterações</Button>
           </CardContent>
         </Card>
 
@@ -46,39 +46,39 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Notifications
+              Notificações
             </CardTitle>
-            <CardDescription>Configure how you receive updates</CardDescription>
+            <CardDescription>Configure como você recebe atualizações</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="email-notifications">Email Notifications</Label>
-                <p className="text-sm text-muted-foreground">Receive campaign updates via email</p>
+                <Label htmlFor="email-notifications">Notificações por E-mail</Label>
+                <p className="text-sm text-muted-foreground">Receber atualizações de campanha por e-mail</p>
               </div>
               <Switch id="email-notifications" defaultChecked data-testid="switch-email-notifications" />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="task-reminders">Task Reminders</Label>
-                <p className="text-sm text-muted-foreground">Get reminded about upcoming deadlines</p>
+                <Label htmlFor="task-reminders">Lembretes de Tarefas</Label>
+                <p className="text-sm text-muted-foreground">Receber lembretes sobre prazos futuros</p>
               </div>
               <Switch id="task-reminders" defaultChecked data-testid="switch-task-reminders" />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="weekly-reports">Weekly Reports</Label>
-                <p className="text-sm text-muted-foreground">Receive weekly performance summaries</p>
+                <Label htmlFor="weekly-reports">Relatórios Semanais</Label>
+                <p className="text-sm text-muted-foreground">Receber resumos semanais de desempenho</p>
               </div>
               <Switch id="weekly-reports" data-testid="switch-weekly-reports" />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="backup-alerts">Backup Alerts</Label>
-                <p className="text-sm text-muted-foreground">Notifications when backups complete</p>
+                <Label htmlFor="backup-alerts">Alertas de Backup</Label>
+                <p className="text-sm text-muted-foreground">Notificações quando backups forem concluídos</p>
               </div>
               <Switch id="backup-alerts" defaultChecked data-testid="switch-backup-alerts" />
             </div>
@@ -89,27 +89,27 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Mail className="h-5 w-5" />
-              Email Preferences
+              Preferências de E-mail
             </CardTitle>
-            <CardDescription>Manage email communication settings</CardDescription>
+            <CardDescription>Gerencie configurações de comunicação por e-mail</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="notification-email">Notification Email</Label>
-              <Input id="notification-email" type="email" placeholder="notifications@company.com" data-testid="input-notification-email" />
+              <Label htmlFor="notification-email">E-mail de Notificação</Label>
+              <Input id="notification-email" type="email" placeholder="notificacoes@empresa.com" data-testid="input-notification-email" />
             </div>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="digest-emails">Daily Digest</Label>
-                <p className="text-sm text-muted-foreground">Combine updates into daily summary</p>
+                <Label htmlFor="digest-emails">Resumo Diário</Label>
+                <p className="text-sm text-muted-foreground">Combinar atualizações em resumo diário</p>
               </div>
               <Switch id="digest-emails" data-testid="switch-digest-emails" />
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="marketing-emails">Marketing Updates</Label>
-                <p className="text-sm text-muted-foreground">Product news and feature updates</p>
+                <Label htmlFor="marketing-emails">Atualizações de Marketing</Label>
+                <p className="text-sm text-muted-foreground">Novidades de produtos e atualizações de recursos</p>
               </div>
               <Switch id="marketing-emails" defaultChecked data-testid="switch-marketing-emails" />
             </div>
@@ -120,30 +120,30 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5" />
-              Security
+              Segurança
             </CardTitle>
-            <CardDescription>Manage your security settings</CardDescription>
+            <CardDescription>Gerencie suas configurações de segurança</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>Senha</Label>
               <Button variant="outline" className="w-full" data-testid="button-change-password">
-                Change Password
+                Alterar Senha
               </Button>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="two-factor">Two-Factor Authentication</Label>
-                <p className="text-sm text-muted-foreground">Add extra security to your account</p>
+                <Label htmlFor="two-factor">Autenticação de Dois Fatores</Label>
+                <p className="text-sm text-muted-foreground">Adicionar segurança extra à sua conta</p>
               </div>
               <Switch id="two-factor" data-testid="switch-two-factor" />
             </div>
             <Separator />
             <div className="space-y-2">
-              <Label>Session Management</Label>
+              <Label>Gerenciamento de Sessão</Label>
               <Button variant="outline" className="w-full" data-testid="button-sign-out-devices">
-                Sign Out All Devices
+                Sair de Todos os Dispositivos
               </Button>
             </div>
           </CardContent>

@@ -28,80 +28,80 @@ export default function Campaigns() {
   const mockCampaigns: Campaign[] = [
     {
       id: "1",
-      name: "Employee Wellness Initiative",
-      description: "Promote health and wellness programs across the organization",
+      name: "Iniciativa de Bem-Estar dos Funcionários",
+      description: "Promover programas de saúde e bem-estar em toda a organização",
       status: "active",
       startDate: new Date("2024-01-15"),
       endDate: new Date("2024-03-15"),
       budget: 15000,
-      targetAudience: "All employees",
-      goals: "Increase wellness program participation by 40%",
-      metrics: { reach: "1,245", engagement: "68%", duration: "2 months", progress: 65 },
+      targetAudience: "Todos os funcionários",
+      goals: "Aumentar participação em programas de bem-estar em 40%",
+      metrics: { reach: "1.245", engagement: "68%", duration: "2 meses", progress: 65 },
       createdAt: new Date(),
     },
     {
       id: "2",
-      name: "Diversity & Inclusion Campaign",
-      description: "Celebrate diversity and promote inclusive workplace culture",
+      name: "Campanha de Diversidade e Inclusão",
+      description: "Celebrar a diversidade e promover cultura inclusiva no ambiente de trabalho",
       status: "active",
       startDate: new Date("2024-02-01"),
       endDate: new Date("2024-04-30"),
       budget: 25000,
-      targetAudience: "All employees",
-      goals: "Raise awareness and engagement on D&I initiatives",
-      metrics: { reach: "2,100", engagement: "74%", duration: "3 months", progress: 42 },
+      targetAudience: "Todos os funcionários",
+      goals: "Aumentar conscientização e engajamento em iniciativas de D&I",
+      metrics: { reach: "2.100", engagement: "74%", duration: "3 meses", progress: 42 },
       createdAt: new Date(),
     },
     {
       id: "3",
-      name: "Remote Work Culture",
-      description: "Build strong connections among remote team members",
+      name: "Cultura de Trabalho Remoto",
+      description: "Construir conexões fortes entre membros de equipes remotas",
       status: "draft",
       startDate: new Date("2024-03-01"),
       endDate: new Date("2024-05-31"),
       budget: 18000,
-      targetAudience: "Remote employees",
-      goals: "Improve remote collaboration and team bonding",
-      metrics: { reach: "850", engagement: "0%", duration: "3 months", progress: 0 },
+      targetAudience: "Funcionários remotos",
+      goals: "Melhorar colaboração remota e integração da equipe",
+      metrics: { reach: "850", engagement: "0%", duration: "3 meses", progress: 0 },
       createdAt: new Date(),
     },
     {
       id: "4",
-      name: "Leadership Development",
-      description: "Empower future leaders with training and mentorship",
+      name: "Desenvolvimento de Liderança",
+      description: "Capacitar futuros líderes com treinamento e mentoria",
       status: "completed",
       startDate: new Date("2023-10-01"),
       endDate: new Date("2023-12-31"),
       budget: 35000,
-      targetAudience: "Managers and senior staff",
-      goals: "Complete leadership training for 50 employees",
-      metrics: { reach: "52", engagement: "92%", duration: "3 months", progress: 100 },
+      targetAudience: "Gerentes e equipe sênior",
+      goals: "Completar treinamento de liderança para 50 funcionários",
+      metrics: { reach: "52", engagement: "92%", duration: "3 meses", progress: 100 },
       createdAt: new Date(),
     },
     {
       id: "5",
-      name: "Employee Recognition Program",
-      description: "Celebrate and recognize outstanding employee contributions",
+      name: "Programa de Reconhecimento de Funcionários",
+      description: "Celebrar e reconhecer contribuições excepcionais dos funcionários",
       status: "active",
       startDate: new Date("2024-01-01"),
       endDate: new Date("2024-12-31"),
       budget: 20000,
-      targetAudience: "All employees",
-      goals: "Increase employee satisfaction and retention",
-      metrics: { reach: "3,200", engagement: "81%", duration: "12 months", progress: 28 },
+      targetAudience: "Todos os funcionários",
+      goals: "Aumentar satisfação e retenção de funcionários",
+      metrics: { reach: "3.200", engagement: "81%", duration: "12 meses", progress: 28 },
       createdAt: new Date(),
     },
     {
       id: "6",
-      name: "New Hire Onboarding 2024",
-      description: "Welcome and integrate new team members effectively",
+      name: "Integração de Novos Funcionários 2024",
+      description: "Receber e integrar novos membros da equipe de forma eficaz",
       status: "active",
       startDate: new Date("2024-01-01"),
       endDate: new Date("2024-12-31"),
       budget: 12000,
-      targetAudience: "New hires",
-      goals: "Reduce time-to-productivity for new employees",
-      metrics: { reach: "145", engagement: "88%", duration: "12 months", progress: 15 },
+      targetAudience: "Novos contratados",
+      goals: "Reduzir tempo de produtividade para novos funcionários",
+      metrics: { reach: "145", engagement: "88%", duration: "12 meses", progress: 15 },
       createdAt: new Date(),
     },
   ];
@@ -122,21 +122,21 @@ export default function Campaigns() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-semibold">Campaigns</h1>
+          <h1 className="text-2xl font-semibold">Campanhas</h1>
           <p className="text-sm text-muted-foreground">
-            Manage all your HR marketing campaigns
+            Gerencie todas as suas campanhas de marketing de RH
           </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button data-testid="button-create-campaign">
               <Plus className="h-4 w-4 mr-2" />
-              New Campaign
+              Nova Campanha
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Create New Campaign</DialogTitle>
+              <DialogTitle>Criar Nova Campanha</DialogTitle>
             </DialogHeader>
             <CampaignForm onSubmit={handleCreateCampaign} />
           </DialogContent>
@@ -147,7 +147,7 @@ export default function Campaigns() {
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search campaigns..."
+            placeholder="Buscar campanhas..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -157,14 +157,14 @@ export default function Campaigns() {
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-[180px]" data-testid="select-status-filter">
             <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder="Filtrar por status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
+            <SelectItem value="all">Todos os Status</SelectItem>
+            <SelectItem value="draft">Rascunho</SelectItem>
+            <SelectItem value="active">Ativa</SelectItem>
+            <SelectItem value="completed">Concluída</SelectItem>
+            <SelectItem value="archived">Arquivada</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -182,7 +182,7 @@ export default function Campaigns() {
 
       {filteredCampaigns.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No campaigns found</p>
+          <p className="text-muted-foreground">Nenhuma campanha encontrada</p>
         </div>
       )}
     </div>

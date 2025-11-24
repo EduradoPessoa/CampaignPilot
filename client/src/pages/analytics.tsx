@@ -5,66 +5,66 @@ import { TrendingUp, Users, DollarSign, Target, BarChart3 } from "lucide-react";
 
 export default function Analytics() {
   const engagementData = [
-    { name: "Week 1", value: 245 },
-    { name: "Week 2", value: 389 },
-    { name: "Week 3", value: 512 },
-    { name: "Week 4", value: 678 },
+    { name: "Sem 1", value: 245 },
+    { name: "Sem 2", value: 389 },
+    { name: "Sem 3", value: 512 },
+    { name: "Sem 4", value: 678 },
   ];
 
   const reachData = [
     { name: "Jan", value: 1200 },
-    { name: "Feb", value: 1580 },
+    { name: "Fev", value: 1580 },
     { name: "Mar", value: 2100 },
-    { name: "Apr", value: 2450 },
-    { name: "May", value: 3100 },
+    { name: "Abr", value: 2450 },
+    { name: "Mai", value: 3100 },
     { name: "Jun", value: 3800 },
   ];
 
   const budgetData = [
-    { name: "Q1", value: 45000 },
-    { name: "Q2", value: 52000 },
-    { name: "Q3", value: 48000 },
-    { name: "Q4", value: 58000 },
+    { name: "T1", value: 45000 },
+    { name: "T2", value: 52000 },
+    { name: "T3", value: 48000 },
+    { name: "T4", value: 58000 },
   ];
 
   const campaignPerformance = [
-    { name: "Employee Wellness", reach: 1245, engagement: 68, budget: 15000 },
-    { name: "Diversity & Inclusion", reach: 2100, engagement: 74, budget: 25000 },
-    { name: "Leadership Dev", reach: 52, engagement: 92, budget: 35000 },
-    { name: "Recognition Program", reach: 3200, engagement: 81, budget: 20000 },
-    { name: "New Hire Onboarding", reach: 145, engagement: 88, budget: 12000 },
+    { name: "Bem-Estar dos Funcionários", reach: 1245, engagement: 68, budget: 15000 },
+    { name: "Diversidade & Inclusão", reach: 2100, engagement: 74, budget: 25000 },
+    { name: "Desenvolvimento de Liderança", reach: 52, engagement: 92, budget: 35000 },
+    { name: "Programa de Reconhecimento", reach: 3200, engagement: 81, budget: 20000 },
+    { name: "Integração de Novos Funcionários", reach: 145, engagement: 88, budget: 12000 },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Analytics</h1>
+        <h1 className="text-2xl font-semibold">Análises</h1>
         <p className="text-sm text-muted-foreground">
-          Track performance and insights across all campaigns
+          Acompanhe o desempenho e insights de todas as campanhas
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
-          title="Total Reach"
-          value="12,458"
+          title="Alcance Total"
+          value="12.458"
           icon={Users}
           trend={{ value: 15.3, isPositive: true }}
         />
         <StatsCard
-          title="Avg Engagement"
+          title="Engajamento Médio"
           value="76%"
           icon={TrendingUp}
           trend={{ value: 8.7, isPositive: true }}
         />
         <StatsCard
-          title="Total Budget"
-          value="$203K"
+          title="Orçamento Total"
+          value="R$ 203mil"
           icon={DollarSign}
           trend={{ value: 12.1, isPositive: false }}
         />
         <StatsCard
-          title="Goal Completion"
+          title="Conclusão de Metas"
           value="68%"
           icon={Target}
           trend={{ value: 5.2, isPositive: true }}
@@ -73,12 +73,12 @@ export default function Analytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AnalyticsChart
-          title="Engagement Trends"
+          title="Tendências de Engajamento"
           data={engagementData}
           type="area"
         />
         <AnalyticsChart
-          title="Reach Growth"
+          title="Crescimento de Alcance"
           data={reachData}
           type="line"
         />
@@ -86,7 +86,7 @@ export default function Analytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AnalyticsChart
-          title="Budget Allocation"
+          title="Alocação de Orçamento"
           data={budgetData}
           type="area"
         />
@@ -95,7 +95,7 @@ export default function Analytics() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="h-5 w-5" />
-              Campaign Performance Comparison
+              Comparação de Desempenho das Campanhas
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -113,8 +113,8 @@ export default function Analytics() {
                     />
                   </div>
                   <div className="flex gap-4 text-xs text-muted-foreground">
-                    <span>Reach: {campaign.reach.toLocaleString()}</span>
-                    <span>Budget: ${campaign.budget.toLocaleString()}</span>
+                    <span>Alcance: {campaign.reach.toLocaleString()}</span>
+                    <span>Orçamento: R$ {campaign.budget.toLocaleString()}</span>
                   </div>
                 </div>
               ))}

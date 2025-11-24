@@ -18,6 +18,13 @@ const statusColors: Record<string, string> = {
   archived: "bg-gray-500/10 text-gray-700 dark:text-gray-400",
 };
 
+const statusLabels: Record<string, string> = {
+  draft: "Rascunho",
+  active: "Ativa",
+  completed: "Concluída",
+  archived: "Arquivada",
+};
+
 export function CampaignCard({ campaign, onView, onEdit }: CampaignCardProps) {
   const metrics = campaign.metrics as any || {};
   const progress = metrics.progress || 0;
@@ -30,11 +37,11 @@ export function CampaignCard({ campaign, onView, onEdit }: CampaignCardProps) {
             {campaign.name}
           </h3>
           <p className="text-sm text-muted-foreground line-clamp-1">
-            {campaign.description || "No description"}
+            {campaign.description || "Sem descrição"}
           </p>
         </div>
         <Badge className={statusColors[campaign.status] || statusColors.draft}>
-          {campaign.status}
+          {statusLabels[campaign.status] || campaign.status}
         </Badge>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -42,35 +49,35 @@ export function CampaignCard({ campaign, onView, onEdit }: CampaignCardProps) {
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-muted-foreground">Reach</p>
+              <p className="text-xs text-muted-foreground">Alcance</p>
               <p className="text-sm font-medium">{metrics.reach || "0"}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-muted-foreground">Engagement</p>
+              <p className="text-xs text-muted-foreground">Engajamento</p>
               <p className="text-sm font-medium">{metrics.engagement || "0%"}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-muted-foreground">Budget</p>
-              <p className="text-sm font-medium">${campaign.budget?.toLocaleString() || "0"}</p>
+              <p className="text-xs text-muted-foreground">Orçamento</p>
+              <p className="text-sm font-medium">R$ {campaign.budget?.toLocaleString() || "0"}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-muted-foreground">Duration</p>
+              <p className="text-xs text-muted-foreground">Duração</p>
               <p className="text-sm font-medium">{metrics.duration || "N/A"}</p>
             </div>
           </div>
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground">Progress</span>
+            <span className="text-muted-foreground">Progresso</span>
             <span className="font-medium">{progress}%</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -85,7 +92,7 @@ export function CampaignCard({ campaign, onView, onEdit }: CampaignCardProps) {
           data-testid={`button-view-${campaign.id}`}
         >
           <Eye className="h-4 w-4 mr-2" />
-          View
+          Ver
         </Button>
         <Button
           variant="outline"
@@ -95,7 +102,7 @@ export function CampaignCard({ campaign, onView, onEdit }: CampaignCardProps) {
           data-testid={`button-edit-${campaign.id}`}
         >
           <Edit className="h-4 w-4 mr-2" />
-          Edit
+          Editar
         </Button>
       </CardFooter>
     </Card>

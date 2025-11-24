@@ -27,7 +27,7 @@ export function TemplateCard({ template, onUse }: TemplateCardProps) {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground line-clamp-2">
-          {template.description || "No description available"}
+          {template.description || "Nenhuma descrição disponível"}
         </p>
       </CardContent>
       <CardFooter>
@@ -39,7 +39,7 @@ export function TemplateCard({ template, onUse }: TemplateCardProps) {
           data-testid={`button-use-template-${template.id}`}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Use Template
+          Usar Modelo
         </Button>
       </CardFooter>
     </Card>

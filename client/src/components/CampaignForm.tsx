@@ -56,10 +56,10 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Campaign Name</FormLabel>
+              <FormLabel>Nome da Campanha</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter campaign name"
+                  placeholder="Digite o nome da campanha"
                   data-testid="input-campaign-name"
                   {...field}
                 />
@@ -74,10 +74,10 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Descrição</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Describe your campaign objectives"
+                  placeholder="Descreva os objetivos da sua campanha"
                   data-testid="input-campaign-description"
                   {...field}
                   value={field.value || ""}
@@ -98,14 +98,14 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger data-testid="select-campaign-status">
-                      <SelectValue placeholder="Select status" />
+                      <SelectValue placeholder="Selecione o status" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="archived">Archived</SelectItem>
+                    <SelectItem value="draft">Rascunho</SelectItem>
+                    <SelectItem value="active">Ativa</SelectItem>
+                    <SelectItem value="completed">Concluída</SelectItem>
+                    <SelectItem value="archived">Arquivada</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -118,7 +118,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
             name="budget"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Budget ($)</FormLabel>
+                <FormLabel>Orçamento (R$)</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -141,7 +141,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
             name="startDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Start Date</FormLabel>
+                <FormLabel>Data de Início</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -151,7 +151,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
                         data-testid="button-start-date"
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? format(new Date(field.value), "PPP") : "Pick a date"}
+                        {field.value ? format(new Date(field.value), "PPP") : "Escolha uma data"}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -173,7 +173,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
             name="endDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>End Date</FormLabel>
+                <FormLabel>Data de Término</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -183,7 +183,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
                         data-testid="button-end-date"
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? format(new Date(field.value), "PPP") : "Pick a date"}
+                        {field.value ? format(new Date(field.value), "PPP") : "Escolha uma data"}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -206,10 +206,10 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
           name="targetAudience"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Target Audience</FormLabel>
+              <FormLabel>Público-Alvo</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="e.g., New hires, Managers"
+                  placeholder="ex: Novos contratados, Gerentes"
                   data-testid="input-target-audience"
                   {...field}
                   value={field.value || ""}
@@ -225,10 +225,10 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
           name="goals"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Goals</FormLabel>
+              <FormLabel>Objetivos</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="What do you want to achieve?"
+                  placeholder="O que você deseja alcançar?"
                   data-testid="input-campaign-goals"
                   {...field}
                   value={field.value || ""}
@@ -241,7 +241,7 @@ export function CampaignForm({ onSubmit, defaultValues, isLoading }: CampaignFor
 
         <div className="flex justify-end gap-2">
           <Button type="submit" disabled={isLoading} data-testid="button-submit-campaign">
-            {isLoading ? "Saving..." : "Save Campaign"}
+            {isLoading ? "Salvando..." : "Salvar Campanha"}
           </Button>
         </div>
       </form>

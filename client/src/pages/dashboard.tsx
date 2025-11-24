@@ -23,41 +23,41 @@ export default function Dashboard() {
   const mockCampaigns: Campaign[] = [
     {
       id: "1",
-      name: "Employee Wellness Initiative",
-      description: "Promote health and wellness programs",
+      name: "Iniciativa de Bem-Estar dos Funcionários",
+      description: "Promover programas de saúde e bem-estar",
       status: "active",
       startDate: new Date("2024-01-15"),
       endDate: new Date("2024-03-15"),
       budget: 15000,
-      targetAudience: "All employees",
-      goals: "Increase participation by 40%",
-      metrics: { reach: "1,245", engagement: "68%", duration: "2 months", progress: 65 },
+      targetAudience: "Todos os funcionários",
+      goals: "Aumentar participação em 40%",
+      metrics: { reach: "1.245", engagement: "68%", duration: "2 meses", progress: 65 },
       createdAt: new Date(),
     },
     {
       id: "2",
-      name: "Diversity & Inclusion Campaign",
-      description: "Celebrate diversity in the workplace",
+      name: "Campanha de Diversidade e Inclusão",
+      description: "Celebrar a diversidade no ambiente de trabalho",
       status: "active",
       startDate: new Date("2024-02-01"),
       endDate: new Date("2024-04-30"),
       budget: 25000,
-      targetAudience: "All employees",
-      goals: "Raise awareness and engagement",
-      metrics: { reach: "2,100", engagement: "74%", duration: "3 months", progress: 42 },
+      targetAudience: "Todos os funcionários",
+      goals: "Aumentar conscientização e engajamento",
+      metrics: { reach: "2.100", engagement: "74%", duration: "3 meses", progress: 42 },
       createdAt: new Date(),
     },
     {
       id: "3",
-      name: "Remote Work Culture",
-      description: "Build strong remote team connections",
+      name: "Cultura de Trabalho Remoto",
+      description: "Construir conexões fortes entre equipes remotas",
       status: "draft",
       startDate: new Date("2024-03-01"),
       endDate: new Date("2024-05-31"),
       budget: 18000,
-      targetAudience: "Remote employees",
-      goals: "Improve remote collaboration",
-      metrics: { reach: "850", engagement: "0%", duration: "3 months", progress: 0 },
+      targetAudience: "Funcionários remotos",
+      goals: "Melhorar colaboração remota",
+      metrics: { reach: "850", engagement: "0%", duration: "3 meses", progress: 0 },
       createdAt: new Date(),
     },
   ];
@@ -66,8 +66,8 @@ export default function Dashboard() {
     {
       id: "1",
       campaignId: "1",
-      title: "Design social media graphics",
-      description: "Create engaging visuals",
+      title: "Criar artes para redes sociais",
+      description: "Criar visuais atraentes",
       assignee: "Sarah Chen",
       status: "pending",
       priority: "high",
@@ -77,8 +77,8 @@ export default function Dashboard() {
     {
       id: "2",
       campaignId: "1",
-      title: "Write blog post content",
-      description: "Draft article",
+      title: "Escrever conteúdo para blog",
+      description: "Rascunhar artigo",
       assignee: "Mike Johnson",
       status: "completed",
       priority: "medium",
@@ -88,8 +88,8 @@ export default function Dashboard() {
     {
       id: "3",
       campaignId: "2",
-      title: "Schedule email newsletter",
-      description: "Send to all employees",
+      title: "Agendar newsletter por e-mail",
+      description: "Enviar para todos os funcionários",
       assignee: "Lisa Park",
       status: "pending",
       priority: "low",
@@ -100,10 +100,10 @@ export default function Dashboard() {
 
   const chartData = [
     { name: "Jan", value: 245 },
-    { name: "Feb", value: 389 },
+    { name: "Fev", value: 389 },
     { name: "Mar", value: 512 },
-    { name: "Apr", value: 678 },
-    { name: "May", value: 823 },
+    { name: "Abr", value: 678 },
+    { name: "Mai", value: 823 },
     { name: "Jun", value: 956 },
   ];
 
@@ -120,21 +120,21 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <h1 className="text-2xl font-semibold">Painel</h1>
           <p className="text-sm text-muted-foreground">
-            Monitor and manage your HR marketing campaigns
+            Monitore e gerencie suas campanhas de marketing de RH
           </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button data-testid="button-create-campaign">
               <Plus className="h-4 w-4 mr-2" />
-              New Campaign
+              Nova Campanha
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Create New Campaign</DialogTitle>
+              <DialogTitle>Criar Nova Campanha</DialogTitle>
             </DialogHeader>
             <CampaignForm onSubmit={handleCreateCampaign} />
           </DialogContent>
@@ -143,26 +143,26 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
-          title="Active Campaigns"
+          title="Campanhas Ativas"
           value="12"
           icon={FolderKanban}
           trend={{ value: 8.2, isPositive: true }}
         />
         <StatsCard
-          title="Total Reach"
-          value="4,892"
+          title="Alcance Total"
+          value="4.892"
           icon={Users}
           trend={{ value: 12.5, isPositive: true }}
         />
         <StatsCard
-          title="Avg Engagement"
+          title="Engajamento Médio"
           value="67%"
           icon={TrendingUp}
           trend={{ value: 3.1, isPositive: true }}
         />
         <StatsCard
-          title="Budget Spent"
-          value="$58K"
+          title="Orçamento Gasto"
+          value="R$ 58mil"
           icon={DollarSign}
           trend={{ value: 5.4, isPositive: false }}
         />
@@ -171,18 +171,18 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <AnalyticsChart
-            title="Campaign Performance Over Time"
+            title="Desempenho das Campanhas ao Longo do Tempo"
             data={chartData}
             type="area"
           />
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Recent Campaigns</h2>
+              <h2 className="text-lg font-semibold">Campanhas Recentes</h2>
               <div className="relative w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search campaigns..."
+                  placeholder="Buscar campanhas..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
